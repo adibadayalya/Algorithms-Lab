@@ -42,12 +42,13 @@ int main(){
     auto arr5 =  new long long[len[4]];
     auto arr6 =  new long long[len[5]];
     vector<long long>ans[6];
+    vector<long long>avg(6.0);
     srand(0);
     Solution obejct;
     auto start = high_resolution_clock::now();
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
-    int n=100;
+    int n=10;
     while(n--)
     {
         for(long long i=0;i<len[0];i++){
@@ -58,9 +59,10 @@ int main(){
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         ans[0].push_back(duration.count());
+        avg[0]+=duration.count();
     }
 
-    n=100;
+    n=10;
     while(n--)
     {
         for(long long i=0;i<len[1];i++){
@@ -71,9 +73,10 @@ int main(){
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         ans[1].push_back(duration.count());
+        avg[1]+=duration.count();
     }
 
-    n=100;
+    n=10;
     while(n--)
     {
         for(long long i=0;i<len[2];i++){
@@ -84,9 +87,10 @@ int main(){
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         ans[2].push_back(duration.count());
+        avg[2]+=duration.count();
     }
 
-    n=100;
+    n=10;
     while(n--)
     {
         for(long long i=0;i<len[3];i++){
@@ -97,9 +101,10 @@ int main(){
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         ans[3].push_back(duration.count());
+        avg[3]+=duration.count();
     }
 
-    n=100;
+    n=10;
     while(n--)
     {
         for(long long i=0;i<len[4];i++){
@@ -110,9 +115,10 @@ int main(){
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         ans[4].push_back(duration.count());
+        avg[4]+=duration.count();
     }
 
-    n=100;
+    n=10;
     while(n--)
     {    
         for(long long i=0;i<len[5];i++){
@@ -123,18 +129,13 @@ int main(){
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         ans[5].push_back(duration.count());
+        avg[5]+=duration.count();
     }
-    ofstream dataFile("timeData.csv");
-    dataFile<<"10,100,1000,10000,100000,1000000\n";
-    for(int i=0;i<100;i++){
-        for(int j=0;j<6;j++){
-            if(j!=5){
-                dataFile<<ans[j][i]<<',';
-            }
-            else {
-                dataFile<<ans[j][i]<<'\n';
-            }
-        }
+    ofstream dataFile("../timeDataH.csv");
+    for(int i=0;i<6;i++){
+        long double temp = avg[i]/10;
+        dataFile<<len[i]<<',';
+        dataFile<<temp<<'\n';
     }
 
     return 0;
