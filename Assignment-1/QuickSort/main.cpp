@@ -2,33 +2,29 @@
 using namespace std;
 using namespace std::chrono;
 
-class Solution
-{
-    public:
-    int partition(long long arr[], long long l, long long r){
-        long long pivot = arr[r];
-        long long i = l-1;
-        for(long long j=l;j<r;j++){
-            if(arr[j]<pivot){
-                i++;
-                swap(arr[i],arr[j]);
-            }
-        }
-        swap(arr[i+1],arr[r]);
-        return (i+1);
-    }
-    public:
-    void quickSort(long long arr[], long long l, long long r){
-        if(l<r){
-            long long pi = partition(arr,l,r);
-            quickSort(arr,l,pi-1);
-            quickSort(arr,pi+1,r);
+int partition(long long arr[], long long l, long long r){
+    long long pivot = arr[r];
+    long long i = l-1;
+    for(long long j=l;j<r;j++){
+        if(arr[j]<pivot){
+            i++;
+            swap(arr[i],arr[j]);
         }
     }
-};
+    swap(arr[i+1],arr[r]);
+    return (i+1);
+}
+
+void quickSort(long long arr[], long long l, long long r){
+    if(l<r){
+        long long pi = partition(arr,l,r);
+        quickSort(arr,l,pi-1);
+        quickSort(arr,pi+1,r);
+    }
+}
 
 int main(){
-    //10 100 1000 10000 100000 1000000
+    
     long long len[] = {10,100,1000,10000,100000,1000000};
     auto arr1 =  new long long[len[0]];
     auto arr2 =  new long long[len[1]];
@@ -39,7 +35,6 @@ int main(){
     vector<long long>avg(6.0);
     vector<long long>ans[6];
     srand(0);
-    Solution obejct;
     auto start = high_resolution_clock::now();
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
@@ -50,7 +45,7 @@ int main(){
         arr1[i]=rand();
         }
         start = high_resolution_clock::now();
-        obejct.quickSort(arr1,0,len[0]-1);
+        quickSort(arr1,0,len[0]-1);
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         ans[0].push_back(duration.count());
@@ -64,7 +59,7 @@ int main(){
             arr2[i]=rand();
         }
         start = high_resolution_clock::now();
-        obejct.quickSort(arr2,0,len[1]-1);
+        quickSort(arr2,0,len[1]-1);
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         ans[1].push_back(duration.count());
@@ -78,7 +73,7 @@ int main(){
             arr3[i]=rand();
         }
         start = high_resolution_clock::now();
-        obejct.quickSort(arr3,0,len[2]-1);
+        quickSort(arr3,0,len[2]-1);
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         ans[2].push_back(duration.count());
@@ -92,7 +87,7 @@ int main(){
             arr4[i]=rand();
         }
         start = high_resolution_clock::now();
-        obejct.quickSort(arr4,0,len[3]-1);
+        quickSort(arr4,0,len[3]-1);
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         ans[3].push_back(duration.count());
@@ -106,7 +101,7 @@ int main(){
             arr5[i]=rand();
         }
         start = high_resolution_clock::now();
-        obejct.quickSort(arr5,0,len[4]-1);
+        quickSort(arr5,0,len[4]-1);
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         ans[4].push_back(duration.count());
@@ -120,13 +115,13 @@ int main(){
             arr6[i]=rand();
         }
         start = high_resolution_clock::now();
-        obejct.quickSort(arr6,0,len[5]-1);
+        quickSort(arr6,0,len[5]-1);
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         ans[5].push_back(duration.count());
         avg[5]+=duration.count();
     }
-    ofstream dataFile("../timeDataQ.csv");
+    ofstream dataFile("../timeDataQuick.csv");
     for(int i=0;i<6;i++){
         long double temp = avg[i]/10;
         dataFile<<len[i]<<',';

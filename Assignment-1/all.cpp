@@ -2,9 +2,6 @@
 using namespace std;
 using namespace std::chrono;
 
-class Solution
-{
-    public:
     void heapify(long long arr[], long long n, long long i){
         long long largest=i;
         long long left = 2*i +1;
@@ -20,7 +17,6 @@ class Solution
             heapify(arr,n,largest);
         }
     }
-    public:
     void heapSort(long long arr[], long long n){
         for(long long i=n/2-1;i>=0;i--){
             heapify(arr,n,i);
@@ -30,7 +26,6 @@ class Solution
             heapify(arr,i,0);
         }
     }
-    public:
     void merge(long long arr[], long long l, long long m, long long r){
         long long leftLenth=m-l+1;
         long long rightLength=r-m;
@@ -67,7 +62,6 @@ class Solution
         free(rightAr);
         free(leftAr);
     }
-    public:
     void mergeSort(long long arr[], long long l, long long r){
         if(l<r){
             int mid = l +(r-l)/2;
@@ -76,7 +70,6 @@ class Solution
             merge(arr,l,mid,r);
         }
     }
-    public:
     int partition(long long arr[], long long l, long long r){
         long long pivot = arr[r];
         long long i = l-1;
@@ -89,7 +82,6 @@ class Solution
         swap(arr[i+1],arr[r]);
         return (i+1);
     }
-    public:
     void quickSort(long long arr[], long long l, long long r){
         if(l<r){
             long long pi = partition(arr,l,r);
@@ -97,18 +89,15 @@ class Solution
             quickSort(arr,pi+1,r);
         }
     }
-};
 
 int main(){
     long long k = 10000;
-    ofstream dataFile("comparativeAnalysis.csv");
     vector<long long>qs;
     vector<long long>hs;
     vector<long long>ms;
     auto start = high_resolution_clock::now();
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);
-    Solution obj;
     while(k<=1000000)
     {
         auto arr = new long long[k];
@@ -117,7 +106,7 @@ int main(){
             arr[i]=rand();
         }
         start = high_resolution_clock::now();
-        obj.quickSort(arr,0,k-1);
+        quickSort(arr,0,k-1);
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         qs.push_back(duration.count());
@@ -125,7 +114,7 @@ int main(){
             arr[i]=rand();
         }
         start = high_resolution_clock::now();
-        obj.mergeSort(arr,0,k-1);
+        mergeSort(arr,0,k-1);
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         ms.push_back(duration.count());
@@ -133,11 +122,11 @@ int main(){
             arr[i]=rand();
         }
         start = high_resolution_clock::now();
-        obj.heapSort(arr,k);
+        heapSort(arr,k);
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         hs.push_back(duration.count());
-        k+=50000;
+        k+=10000;
         free(arr);
     }
     k = 10000;
@@ -148,7 +137,7 @@ int main(){
         qsFile<<k<<','<<qs[i]<<'\n';
         msFile<<k<<','<<ms[i]<<'\n';
         hsFile<<k<<','<<hs[i]<<'\n';
-        k+=50000;
+        k+=10000;
     }
     return 0;
 }
