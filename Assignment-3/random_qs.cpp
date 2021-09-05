@@ -9,6 +9,7 @@ class Solution
         srand(0);
         long long temp = l + rand()%(r-l);
         long long pivot = arr[temp];
+        swap(arr[r],arr[temp]);
         long long i = l-1;
         for(long long j=l;j<r;j++){
             if(arr[j]<pivot){

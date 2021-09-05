@@ -11,6 +11,7 @@ class Solution
             srand(0);
             long long temp = l + (rand()%(r-l));
             pivot = arr[temp];
+            swap(arr[temp],arr[r]);
         } else{
             pivot = arr[r];
         }

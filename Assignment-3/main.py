@@ -5,8 +5,9 @@ class Solution:
     def partition(self, arr, l, r, randomised):
         pivot=arr[r]
         if randomised == True:
-            temp = random.randint(l,r-1)
+            temp = random.randint(l,r)
             pivot=arr[temp]
+            arr[temp],arr[r]=arr[r],arr[temp]
         i =l-1
         for j in range(l,r):
             if(arr[j]<pivot):
@@ -30,14 +31,14 @@ if __name__ == '__main__':
             writer = csv.DictWriter(end_comp, fieldnames=fieldNames)
             writer2 = csv.DictWriter(rand_comp, fieldnames=fieldNames)
             while k<=100000:
-                start = time.time()
                 arr = [random.randint(1,100000) for _ in range(k)]
+                start = time.time()
                 Solution().quickSort(arr,0,k-1, False)
                 stop = time.time()
                 duration = stop -start
                 writer.writerow({'lenght':k,'time':int(duration*1000)})
-                start = time.time()
                 arr = [random.randint(1,100000) for _ in range(k)]
+                start = time.time()
                 Solution().quickSort(arr,0,k-1, True)
                 stop = time.time()
                 duration = stop -start
