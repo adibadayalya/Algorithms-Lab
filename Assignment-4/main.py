@@ -1,15 +1,19 @@
 from collections import defaultdict
 from random import randint
+import networkx as nx
+import matplotlib.pyplot as plt
 
 class Graph:
     def __init__(self):
         self.graph = defaultdict(list)
+        self.visual = []
     
     def addEdge(self,v,w):
         self.graph[v].append(w)
+        self.visual.append([v,w])
     
     def BFS(self,s):
-        visited = [False]*(max(self.graph)+1)
+        visited = [False]*10000
         queue = []
         queue.append(s)
         visited[s]=True
@@ -20,6 +24,12 @@ class Graph:
                 if visited[i]==False:
                     visited[i]=True
                     queue.append(i)
+    def visualize(self):
+        G = nx.Graph()
+        G.add_edges_from(self.visual)
+        nx.draw_networkx(G)
+        plt.show()
+
 
 if __name__ == '__main__':
     graph = Graph()
@@ -41,5 +51,6 @@ if __name__ == '__main__':
         if i==0:
             q=p
     graph.BFS(q[0])
+    graph.visualize()
 
           
