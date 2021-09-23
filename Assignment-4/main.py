@@ -25,9 +25,16 @@ class Graph:
                     visited[i]=True
                     queue.append(i)
     def visualize(self):
+        options = {
+        'node_color': 'yellow',
+        'node_size': 1000,
+        'width': 2,
+        'arrowstyle': '-|>',
+        'arrowsize': 6,
+        }
         G = nx.Graph()
         G.add_edges_from(self.visual)
-        nx.draw_networkx(G)
+        nx.draw_networkx(G, arrows=True,**options)
         plt.show()
 
 
