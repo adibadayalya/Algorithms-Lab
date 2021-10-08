@@ -5,19 +5,22 @@ import time
 
 pygame.init()
 pygame.font.init()
-myfont = pygame.font.SysFont("Comic Sans MS", 12)
-myfont2 = pygame.font.SysFont("Comic Sans MS", 30)
+myfont = pygame.font.SysFont("Calibri", 12)
 
+traversalx=0
+traversaly=480
 
 screen = pygame.display.set_mode((500, 500))
-
+pygame.display.set_caption('BFS Visualizer')
 running = True
 coordiantes = []  
 edges = []
 
 
 def visited_color(i):
-    time.sleep(0.5)
+    global traversalx
+    global traversaly
+    time.sleep(1)
     x = 0
     y = 0
     for j in coordiantes:
@@ -26,37 +29,25 @@ def visited_color(i):
             y = j[1]
             break
 
-    gfxdraw.aacircle(screen, x, y, 20, (255, 255, 255))
-    gfxdraw.filled_circle(screen, x, y, 18, (0, 255, 0))  # colour inside the circle
-    textsurface = myfont.render(str(i), True, (0, 0, 0))  # color of text
+    gfxdraw.aacircle(screen, x, y, 20, (0, 0, 0))
+    gfxdraw.filled_circle(screen, x, y, 18, (0, 0, 0))  # colour inside the circle
+    textsurface = myfont.render(str(i), True, (255, 255, 255))  # color of text
+    textsurface1 = myfont.render("-->"+str(i), True, (0, 0, 0))
+    screen.blit(textsurface1, (traversalx, traversaly))
     if len(str(i)) == 1:
         screen.blit(textsurface, (x - 6, y - 10))  # allignment change
+        traversalx+=20
     elif len(str(i)) == 2:
         screen.blit(textsurface, (x - 8, y - 10))  # allignment change
+        traversalx+=29
     else:
         screen.blit(textsurface, (x - 16, y - 10))  # allignment change
+        traversalx+=38
+    
     pygame.display.update()
-
-
-def visited_color2(i):
-    x = 1350
-    y = 320 + 100
-    gfxdraw.aacircle(screen, x, y, 20, (255, 255, 255))
-    gfxdraw.filled_circle(screen, x, y, 18, (0, 255, 0))  # colour inside the circle
-    textsurface = myfont.render(str(i), True, (0, 0, 0))  # color of text
-    if len(str(i)) == 1:
-        screen.blit(textsurface, (x - 6, y - 10))  # allignment change
-    elif len(str(i)) == 2:
-        screen.blit(textsurface, (x - 8, y - 10))  # allignment change
-    else:
-        screen.blit(textsurface, (x - 16, y - 10))  # allignment change
-    textsurface = myfont.render(" -> Visited Node", True, (0, 255, 0))
-    screen.blit(textsurface, (x + 30, y - 10))
-    pygame.display.update()
-
 
 def current_color(i):
-    time.sleep(0.05)
+    time.sleep(1.0)
     x = 0
     y = 0
     for j in coordiantes:
@@ -65,8 +56,8 @@ def current_color(i):
             y = j[1]
             break
 
-    gfxdraw.aacircle(screen, x, y, 20, (255, 255, 255))
-    gfxdraw.filled_circle(screen, x, y, 18, (255, 0, 0))  # colour inside the circle
+    gfxdraw.aacircle(screen, x, y, 20, (255, 0, 0))
+    gfxdraw.filled_circle(screen, x, y, 18, (220, 220, 220))  # colour inside the circle
     textsurface = myfont.render(str(i), True, (0, 0, 0))  # color of text
     if len(str(i)) == 1:
         screen.blit(textsurface, (x - 6, y - 10))  # allignment change
@@ -78,10 +69,11 @@ def current_color(i):
 
 
 def current_color2(i):
-    x = 1350
-    y = 260 + 100
-    gfxdraw.aacircle(screen, x, y, 20, (255, 255, 255))
-    gfxdraw.filled_circle(screen, x, y, 18, (255, 0, 0))  # colour inside the circle
+    #bottom right current node indicator 
+    x = 450
+    y = 460
+    gfxdraw.aacircle(screen, x, y, 20, (0, 0, 0))
+    gfxdraw.filled_circle(screen, x, y, 18, (220, 220, 220))  # colour inside the circle
     textsurface = myfont.render(str(i), True, (0, 0, 0))  # color of text
     if len(str(i)) == 1:
         screen.blit(textsurface, (x - 6, y - 10))  # allignment change
@@ -89,31 +81,13 @@ def current_color2(i):
         screen.blit(textsurface, (x - 8, y - 10))  # allignment change
     else:
         screen.blit(textsurface, (x - 16, y - 10))  # allignment change
-    textsurface = myfont.render(" -> Current Node", True, (255, 0, 0))
-    screen.blit(textsurface, (x + 30, y - 10))
-    pygame.display.update()
-
-
-def queue_color2(i):
-
-    gfxdraw.aacircle(screen, 1350, 300, 20, (255, 255, 255))
-    gfxdraw.filled_circle(
-        screen, 1350, 300, 18, (0, 0, 255)
-    )  # colour inside the circle
-    textsurface = myfont.render(str(i), True, (0, 0, 0))  # color of text
-    if len(str(i)) == 1:
-        screen.blit(textsurface, (1350 - 6, 300 - 10))  # allignment change
-    elif len(str(i)) == 2:
-        screen.blit(textsurface, (1350 - 8, 300 - 10))  # allignment change
-    else:
-        screen.blit(textsurface, (1350 - 16, 300 - 10))  # allignment change
-    textsurface = myfont.render(" -> In Queue Node", True, (0, 0, 255))
-    screen.blit(textsurface, (1350 + 30, 300 - 10))
+    textsurface = myfont.render("Current Node", True, (255, 0, 0))
+    screen.blit(textsurface, (x - 34, 480))
     pygame.display.update()
 
 
 def queue_color(i):
-    time.sleep(0.5)
+    time.sleep(1.0)
     x = 0
     y = 0
     for j in coordiantes:
@@ -122,8 +96,8 @@ def queue_color(i):
             y = j[1]
             break
 
-    gfxdraw.aacircle(screen, x, y, 20, (255, 255, 255))
-    gfxdraw.filled_circle(screen, x, y, 18, (0, 0, 255))  # colour inside the circle
+    gfxdraw.aacircle(screen, x, y, 20, (0, 0, 0))
+    gfxdraw.filled_circle(screen, x, y, 18, (220, 220, 220))  # colour inside the circle
     textsurface = myfont.render(str(i), True, (0, 0, 0))  # color of text
     if len(str(i)) == 1:
         screen.blit(textsurface, (x - 6, y - 10))  # allignment change
@@ -135,8 +109,8 @@ def queue_color(i):
 
 
 def node(x, y, n):
-    gfxdraw.aacircle(screen, x, y, 20, (255, 255, 255))
-    gfxdraw.filled_circle(screen, x, y, 18, (145, 240, 252))  # colour inside the circle
+    gfxdraw.aacircle(screen, x, y, 20, (0, 0, 0))
+    gfxdraw.filled_circle(screen, x, y, 18, (255, 255, 255))  # colour inside the circle
     textsurface = myfont.render(n, True, (0, 0, 0))  # color of text
     if len(n) == 1:
         screen.blit(textsurface, (x - 6, y - 10))  # allignment change
@@ -216,55 +190,15 @@ def possible(i, j):
     return True
 
 
-def addingEdgesforTree(non_visited, curr):
-    pygame.event.pump()
-    if not non_visited:
-        return True
-    for j in non_visited:
-        pygame.event.pump()
-        if possible(j, curr):
-            non_visited.remove(j)
-            x1 = 0
-            y1 = 0
-            x2 = 0
-            y2 = 0
-            for k in coordiantes:
-                if k[2] == curr:
-                    x1 = k[0]
-                    y1 = k[1]
-                    break
-            for k in coordiantes:
-                pygame.event.pump()
-                if k[2] == j:
-                    x2 = k[0]
-                    y2 = k[1]
-                    break
-            edges.append([[x1, y1, curr], [x2, y2, j]])
-            if addingEdgesforTree(non_visited, j):
-                pygame.draw.line(screen, (255, 255, 255), (x1, y1), (x2, y2), width=3)
-                pygame.display.flip()
-                return True
-            else:
-                # pygame.draw.line(screen, (0, 0, 0), (x1, y1), (x2, y2), width=3)
-                # pygame.display.flip()
-                non_visited.append(j)
-                edges.remove([[x1, y1, curr], [x2, y2, j]])
-    return False
-
-
 def bfs():
-    visited = []
-    for i in range(nodes_number + 10):
-        visited.append(0)
+    visited = [0] * (nodes_number + 10)
     visited[1] = 1
     queue_color(1)
-    queue_color2(1)
     queue_list = [1]
     while len(queue_list) != 0:
         pygame.event.pump()
         top_node = queue_list[0]
         queue_list.pop(0)
-
         current_color(top_node)
         current_color2(top_node)
 
@@ -277,73 +211,42 @@ def bfs():
                 visited[pair[1][2]] = 1
                 if pair[0][2] == top_node:
                     queue_list.append(pair[1][2])
-                    time.sleep(0.05)
+                    time.sleep(0.5)
                     pygame.draw.line(
                         screen,
-                        (200, 10, 200),
+                        (0,163,108),
                         (pair[0][0], pair[0][1]),
                         (pair[1][0], pair[1][1]),
                         width=4,
-                    )
+                    ) #drawing the path edge
                     pygame.display.flip()
                     current_color(top_node)
                     current_color2(top_node)
                     queue_color(pair[1][2])
-                    queue_color2(pair[1][2])
                 else:
                     queue_list.append(pair[0][2])
-                    time.sleep(0.05)
+                    time.sleep(0.5)
                     pygame.draw.line(
                         screen,
-                        (200, 10, 200),
+                        (0,163,108),
                         (pair[0][0], pair[0][1]),
                         (pair[1][0], pair[1][1]),
                         width=4,
-                    )
+                    ) #drawing the path edge
                     pygame.display.flip()
                     current_color(top_node)
                     current_color2(top_node)
                     queue_color(pair[0][2])
-                    queue_color2(pair[0][2])
         visited_color(top_node)
-        visited_color2(top_node)
 
-
-def scrollX(screenSurf, offsetX):
-    width, height = screenSurf.get_size()
-    copySurf = screenSurf.copy()
-    screenSurf.blit(copySurf, (offsetX, 0))
-    if offsetX < 0:
-        screenSurf.blit(copySurf, (width + offsetX, 0), (0, 0, -offsetX, height))
-    else:
-        screenSurf.blit(copySurf, (0, 0), (width - offsetX, 0, offsetX, height))
-
-
-def scrollY(screenSurf, offsetY):
-    width, height = screenSurf.get_size()
-    copySurf = screenSurf.copy()
-    screenSurf.blit(copySurf, (0, offsetY))
-    if offsetY < 0:
-        screenSurf.blit(copySurf, (0, height + offsetY), (0, 0, width, -offsetY))
-    else:
-        screenSurf.blit(copySurf, (0, 0), (0, height - offsetY, width, offsetY))
-
-  
-
-
-screen.fill((0, 0, 0))
+screen.fill((255, 255, 255))
 
 pygame.display.update()
 
-textsurface = myfont2.render("BFS Visualizer", True, (255, 255, 0))
-screen.blit(textsurface, (1300, 70))
-pygame.display.update()
-
-
-# ------------------------------------------------------NODES RANDOM -------------------------------------------------------------
+#NODES RANDOM
 pygame.event.pump()
 i = 1
-nodes_number = int(input("Enter Number of Ndoes: "))
+nodes_number = int(input("Enter Number of Nodes: "))
 while i <= nodes_number:
     pygame.event.pump()
 
@@ -359,22 +262,20 @@ while i <= nodes_number:
     coordiantes.append([x, y, i])
     i += 1
 
-# ---------------------------------------------------- CONNECTED TREE -----------------------------------------------------------------------
+#CONNECTED TREE
 
 curr = 1
 non_visited = []
 for i in range(2, nodes_number + 1):  # number of nodes
     non_visited.append(i)
 
-# addingEdgesforTree(non_visited, curr)
-
-# ----------------------------------------------------RANDOM EDGES --------------------------------------------------------------------------
+#RANDOM EDGES GENERATION
 
 for i in range(1, nodes_number + 1):
     pygame.event.pump()
     for j in range(
-        random.randint(1, (nodes_number / 2) - 1),
-        random.randint(nodes_number / 2, nodes_number + 1),
+        random.randint(1, (nodes_number // 2) - 1),
+        random.randint(nodes_number // 2, nodes_number + 1),
     ):
         pygame.event.pump()
         if i == j:
@@ -397,38 +298,21 @@ for i in range(1, nodes_number + 1):
                     y2 = k[1]
                     break
             edges.append([[x1, y1, i], [x2, y2, j]])
-            pygame.draw.line(screen, (255, 255, 255), (x1, y1), (x2, y2), width=3)
+            pygame.draw.line(screen, (0, 0, 0), (x1, y1), (x2, y2), width=3) #drawing the initial edge
             pygame.display.flip()
 
-
-# ------------------------------------------------------SHOW NODES-------------------------------------------------
-
+#SHOW NODES
 for i in coordiantes:
     pygame.event.pump()
     node(i[0], i[1], str(i[2]))
     pygame.display.update()
+pygame.event.pump()
+textsurfaces = myfont.render("Traversal Order: ",True,(0,0,0))
+screen.blit(textsurfaces,(0,470))
+pygame.display.update()
 
-
-# ------------------------------------------------------BFS------------------------------------------
 
 bfs()
 
-
-
-while True:  # <-- the pyGame loop
-
-#-----------------------------
-    event = pygame.event.poll()
-    pressed = pygame.key.get_pressed()
-    if event.type == pygame.QUIT:
-        break
-    if pressed[pygame.K_UP]:
-        scrollY(screen, 5)
-    elif pressed[pygame.K_DOWN]:
-        scrollY(screen, -5)
-    elif pressed[pygame.K_LEFT]:
-        scrollX(screen, 5)
-    elif pressed[pygame.K_RIGHT]:
-        scrollX(screen, -5)
+while True:  # <-- main game loop
     pygame.display.update()
-#-----------------------------
