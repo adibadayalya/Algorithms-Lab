@@ -98,7 +98,7 @@ void KruskalMST(Graph* graph)
 	// Number of edges to be taken is equal to V-1 since a cycle is to be avoided 
 	while (e < V - 1 && i < graph->E)
 	{
-		// Step 2: Pick the smallest edge. And increment
+		// Pick the smallest edge. And increment
 		// the index for next iteration
 		Edge next_edge = graph->edge[i++];
 
