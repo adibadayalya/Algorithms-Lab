@@ -113,7 +113,7 @@ int main()
 		}
 		cout<<'\n';
 	}
-	cout<"-------------\n";
+	cout<<"-------------\n";
 	Dijkstra(0,V);
 	return 0;
 }
